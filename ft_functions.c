@@ -6,7 +6,7 @@
 /*   By: cfeijoo <cfeijoo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2013/12/14 00:38:40 by cfeijoo           #+#    #+#             */
-/*   Updated: 2013/12/14 00:41:39 by cfeijoo          ###   ########.fr       */
+/*   Updated: 2013/12/14 05:18:24 by cfeijoo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,12 @@ static int	ft_abs(int n)
 		return (-n);
 }
 
+void		ft_putstr(char *str)
+{
+	if (str)
+		write(1, str, ft_strlen(str));
+}
+
 void		ft_putnbr(int n)
 {
 	char	a;
@@ -30,6 +36,28 @@ void		ft_putnbr(int n)
 		ft_putnbr(ft_abs(n / 10));
 	a = '0' + ft_abs(n % 10);
 	write(1, &a, 1);
+}
+
+char	*ft_strdup(const char *s1)
+{
+	int		i;
+	char	*s2;
+
+	i = 0;
+	if (!s1)
+		return (0);
+	s2 = (char*)malloc(ft_strlen((char*)s1) * sizeof(*s1));
+	if (s2)
+	{
+		while (s1[i])
+		{
+			s2[i] = s1[i];
+			i++;
+		}
+	}
+	else
+		return (0);
+	return (s2);
 }
 
 size_t		ft_strlen(char *str)
