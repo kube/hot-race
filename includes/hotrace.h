@@ -6,7 +6,7 @@
 /*   By: cfeijoo <cfeijoo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2013/12/13 23:15:09 by cfeijoo           #+#    #+#             */
-/*   Updated: 2013/12/15 23:18:50 by cfeijoo          ###   ########.fr       */
+/*   Updated: 2013/12/15 23:26:25 by cfeijoo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,16 +33,10 @@ typedef struct		s_list
 	struct s_list	*next;
 }					t_list;
 
-void				ft_putnbr(int n);
-size_t				ft_strlen(char *str);
-int					ft_strequ(char *str1, char *str2);
-char				*ft_strdup(const char *s1);
-void				ft_putstr(char *str);
-
 unsigned int		basic_hash(char *str);
 unsigned int		verif_hash(char *str);
-
-void				ft_lstqueueadd(t_list **alst, t_list *new);
+size_t				ft_strlen(char *str);
+char				*ft_strdup(const char *s1);
 t_list				*ft_lstnew(void const *content, size_t content_size);
-void				*ft_memcpy(void *s1, const void *s2, size_t n);
+void				ft_lstqueueadd(t_list **alst, t_list *new);
 #endif

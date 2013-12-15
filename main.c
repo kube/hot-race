@@ -6,7 +6,7 @@
 /*   By: cfeijoo <cfeijoo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2013/12/14 18:48:58 by cfeijoo           #+#    #+#             */
-/*   Updated: 2013/12/15 23:04:55 by cfeijoo          ###   ########.fr       */
+/*   Updated: 2013/12/15 23:31:46 by cfeijoo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,14 +47,16 @@ static int			index_var(char *name, char *value, t_var **vars)
 	unsigned int	index;
 	unsigned int	name_verif;
 	unsigned int	hash;
+	char			*toupdate;
 	t_var			*new_var;
 
 	name_verif = verif_hash(name);
 	hash = basic_hash(name);
 	if ((new_var = get_var(hash, name_verif, vars)))
 	{
-		free(new_var->value);
+		toupdate = new_var->value;
 		new_var->value = ft_strdup(value);
+		free(toupdate);
 		return (0);
 	}
 	new_var = set_var(hash, name_verif, value);
