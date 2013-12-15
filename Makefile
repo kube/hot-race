@@ -6,7 +6,7 @@
 #    By: cfeijoo <cfeijoo@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2013/12/14 02:31:26 by cfeijoo           #+#    #+#              #
-#    Updated: 2013/12/15 01:33:56 by cfeijoo          ###   ########.fr        #
+#    Updated: 2013/12/15 20:21:57 by cfeijoo          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,8 +14,9 @@ NAME = hotrace
 
 INCFOLDER = ./includes
 
-SRC	=	main.c \
+SRC	=	main.c		 \
 		ft_functions.c \
+		hash.c			\
 		get_next_line.c
 	
 OSRC = $(SRC:.c=.o)

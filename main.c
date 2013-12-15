@@ -6,47 +6,35 @@
 /*   By: cfeijoo <cfeijoo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2013/12/14 18:48:58 by cfeijoo           #+#    #+#             */
-/*   Updated: 2013/12/15 02:38:10 by cfeijoo          ###   ########.fr       */
+/*   Updated: 2013/12/15 22:56:57 by cfeijoo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <hotrace.h>
 
-unsigned int		basic_hash(char *str)
-{
-	int				c;
-	unsigned int	hash;
-
-	hash = 5381;
-	while ((c = *str++))
-		hash = ((hash << 5) + hash) + c;
-	return (hash % HASH_MAX_SIZE);
-}
-
-static t_var		*set_var(char *name, char *value)
+static t_var		*set_var(unsigned int hash, unsigned int name, char *value)
 {
 	t_var			*new_var;
 
 	if (!(new_var = (t_var*)malloc(sizeof(t_var))))
 		exit(1);
+	new_var->hash = hash;
 	new_var->name = name;
-	new_var->value = value;
+	new_var->value = ft_strdup(value);
 	new_var->next = NULL;
 	return (new_var);
 }
 
-static t_var		*get_var(char *name, t_var **var_index)
+static t_var		*get_var(unsigned int hash,	unsigned int name, t_var **vars)
 {
-	int				hash;
 	t_var			*current;
 
-	hash = basic_hash(name);
-	if (var_index[hash])
+	if (vars[hash % HASH_MAP_SIZE])
 	{
-		current = var_index[hash];
+		current = vars[hash % HASH_MAP_SIZE];
 		while (current)
 		{
-			if (ft_strequ(current->name, name))
+			if (current->hash == hash && current->name == name)
 				return (current);
 			current = current->next;
 		}
@@ -54,23 +42,26 @@ static t_var		*get_var(char *name, t_var **var_index)
 	return (NULL);
 }
 
-static int			index_var(char *name, char *value, t_var **var_index)
+static int			index_var(char *name, char *value, t_var **vars)
 {
-	int				hash;
+	unsigned int	index;
+	unsigned int	name_verif;
+	unsigned int	hash;
 	t_var			*new_var;
 
-	name = ft_strdup(name);
-	if ((new_var = get_var(name, var_index)))
+	name_verif = verif_hash(name);
+	hash = basic_hash(name);
+	if ((new_var = get_var(hash, name_verif, vars)))
 	{
 		free(new_var->value);
 		new_var->value = ft_strdup(value);
 		return (0);
 	}
-	new_var = set_var(name, ft_strdup(value));
-	hash = basic_hash(name);
-	if (var_index[hash])
-		new_var->next = var_index[hash];
-	var_index[hash] = new_var;
+	new_var = set_var(hash, name_verif, value);
+	index = hash % HASH_MAP_SIZE;
+	if (vars[index])
+		new_var->next = vars[index];
+	vars[index] = new_var;
 	return (0);
 }
 
@@ -79,9 +70,9 @@ static t_var		**create_var_index()
 	unsigned int	i;
 	t_var			**var_index;
 
-	var_index = (t_var**)malloc(HASH_MAX_SIZE * sizeof(t_var*));
+	var_index = (t_var**)malloc(HASH_MAP_SIZE * sizeof(t_var*));
 	i = 0;
-	while (i < HASH_MAX_SIZE)
+	while (i < HASH_MAP_SIZE)
 	{
 		var_index[i] = NULL;
 		i++;
@@ -104,16 +95,15 @@ int					main(void)
 	}
 	while (get_next_line(0, &read_name) > 0 && *read_name)
 	{
-		if ((searched_var = get_var(read_name, var_index)))
-		{
-			ft_putstr(searched_var->value);
-		}
+		if ((searched_var = get_var(basic_hash(read_name),
+									verif_hash(read_name), var_index)))
+			write(1, searched_var->value, ft_strlen(searched_var->value));
 		else
 		{
-			ft_putstr(read_name);
-			ft_putstr(": Not found.");
+			write(1, read_name, ft_strlen(read_name));
+			write(1, ": Not found.", 12);
 		}
-		ft_putstr("\n");
+		write(1, "\n", 1);
 	}
 	return (0);
 }
