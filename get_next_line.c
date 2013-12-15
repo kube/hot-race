@@ -6,7 +6,7 @@
 /*   By: cfeijoo <cfeijoo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2013/12/15 02:19:41 by cfeijoo           #+#    #+#             */
-/*   Updated: 2013/12/15 22:56:58 by cfeijoo          ###   ########.fr       */
+/*   Updated: 2013/12/15 23:17:17 by cfeijoo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ static	t_read		*ft_freeread(t_read *red, t_read *prev, t_read **start)
 		return (prev->next);
 }
 
-static	t_read		*ft_newread(int fd)
+static	t_read		*ft_newread()
 {
 	t_read			*red;
 	void			*tmp;
@@ -39,14 +39,13 @@ static	t_read		*ft_newread(int fd)
 		free(red);
 		return (NULL);
 	}
-	if ((ret = read(fd, tmp, BUFF_SIZE)) < 0)
+	if ((ret = read(0, tmp, BUFF_SIZE)) < 0)
 	{
 		free(red);
 		free(tmp);
 		return (NULL);
 	}
 	red->read = (char *)tmp;
-	red->fd = fd;
 	red->size = ret;
 	red->next = NULL;
 	red->index = 0;
@@ -82,7 +81,7 @@ static	int			ft_print(int n, t_read **tab, t_read **s, char** l)
 	return (1);
 }
 
-static	int			ft_findendl(int fd, t_read *red)
+static	int			ft_findendl(t_read *red)
 {
 	int				index;
 	int				size;
@@ -96,7 +95,7 @@ static	int			ft_findendl(int fd, t_read *red)
 		size++;
 		if (index == red->size && red->size == BUFF_SIZE)
 		{
-			if (!(tmplst = ft_newread(fd)))
+			if (!(tmplst = ft_newread()))
 				return (-1);
 			tmplst->next = red->next;
 			red->next = tmplst;
@@ -107,29 +106,20 @@ static	int			ft_findendl(int fd, t_read *red)
 	return (size);
 }
 
-int					get_next_line(int fd, char **line)
+int					get_next_line(char **line)
 {
 	static t_read	*start = NULL;
 	t_read			*red;
 	t_read			*prevtmp;
 	t_read			*tab[2];
 
-	if (fd < 0)
-		return (-1);
 	prevtmp = NULL;
 	if (!start)
-		start = ft_newread(fd);
+		start = ft_newread();
 	red = start;
-	while (red->fd != fd)
-	{
-		if (!(red->next))
-			red->next = ft_newread(fd);
-		prevtmp = red;
-		red = red->next;
-	}
 	if (!red || !start)
 		return (-1);
 	tab[0] = red;
 	tab[1] = prevtmp;
-	return (ft_print(ft_findendl(fd, red), tab, &start, line));
+	return (ft_print(ft_findendl(red), tab, &start, line));
 }

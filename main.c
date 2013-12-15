@@ -6,7 +6,7 @@
 /*   By: cfeijoo <cfeijoo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2013/12/14 18:48:58 by cfeijoo           #+#    #+#             */
-/*   Updated: 2013/12/15 22:56:57 by cfeijoo          ###   ########.fr       */
+/*   Updated: 2013/12/15 23:04:55 by cfeijoo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ static t_var		*set_var(unsigned int hash, unsigned int name, char *value)
 	return (new_var);
 }
 
-static t_var		*get_var(unsigned int hash,	unsigned int name, t_var **vars)
+static t_var		*get_var(unsigned int hash, unsigned int name, t_var **vars)
 {
 	t_var			*current;
 
@@ -88,12 +88,12 @@ int					main(void)
 	t_var			*searched_var;
 
 	var_index = create_var_index();
-	while (get_next_line(0, &read_name) > 0 && *read_name)
+	while (get_next_line(&read_name) > 0 && *read_name)
 	{
-		get_next_line(0, &read_value);
+		get_next_line(&read_value);
 		index_var(read_name, read_value, var_index);
 	}
-	while (get_next_line(0, &read_name) > 0 && *read_name)
+	while (get_next_line(&read_name) > 0 && *read_name)
 	{
 		if ((searched_var = get_var(basic_hash(read_name),
 									verif_hash(read_name), var_index)))

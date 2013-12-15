@@ -1,29 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.h                                    :+:      :+:    :+:   */
+/*   hash.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: cfeijoo <cfeijoo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2013/12/15 02:14:09 by cfeijoo           #+#    #+#             */
-/*   Updated: 2013/12/15 23:01:02 by cfeijoo          ###   ########.fr       */
+/*   Created: 2013/12/15 15:30:01 by cfeijoo           #+#    #+#             */
+/*   Updated: 2013/12/15 22:55:36 by cfeijoo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef GET_NEXT_LINE_H
-# define GET_NEXT_LINE_H
-# include <unistd.h>
-# include <stdlib.h>
-# define BUFF_SIZE 16384
+#include <hotrace.h>
 
-int					get_next_line(char **line);
-
-typedef struct		s_read
+unsigned int		basic_hash(char *str)
 {
-	int				size;
-	int				index;
-	char			*read;
-	struct s_read	*next;
-}					t_read;
+	int				c;
+	unsigned int	hash;
 
-#endif /* !GET_NEXT_LINE_H */
+	hash = 5381;
+	while ((c = *str++))
+		hash = ((hash << 5) + hash) + c;
+	return (hash);
+}
+
+unsigned int		verif_hash(char *str)
+{
+	int				c;
+	unsigned int	hash;
+
+	hash = 0;
+	while ((c = *str++))
+		hash = c + (hash << 3);
+	return (hash);
+}
