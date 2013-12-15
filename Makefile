@@ -6,7 +6,7 @@
 #    By: cfeijoo <cfeijoo@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2013/12/14 02:31:26 by cfeijoo           #+#    #+#              #
-#    Updated: 2013/12/14 03:40:08 by cfeijoo          ###   ########.fr        #
+#    Updated: 2013/12/15 01:33:56 by cfeijoo          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,12 +14,13 @@ NAME = hotrace
 
 INCFOLDER = ./includes
 
-SRC	= main.c \
-	  ft_functions.c
+SRC	=	main.c \
+		ft_functions.c \
+		get_next_line.c
 	
 OSRC = $(SRC:.c=.o)
 
-CFLAGS = -Wall -Wextra -Werror -O3 -pedantic
+CFLAGS = -g -Wall -Wextra -Werror -O4 -pedantic
 CC = gcc
 
 $(NAME):

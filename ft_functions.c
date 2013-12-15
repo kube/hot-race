@@ -6,36 +6,16 @@
 /*   By: cfeijoo <cfeijoo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2013/12/14 00:38:40 by cfeijoo           #+#    #+#             */
-/*   Updated: 2013/12/14 05:18:24 by cfeijoo          ###   ########.fr       */
+/*   Updated: 2013/12/15 01:48:42 by cfeijoo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "hotrace.h"
 
-static int	ft_abs(int n)
-{
-	if (n > 0)
-		return (n);
-	else
-		return (-n);
-}
-
 void		ft_putstr(char *str)
 {
 	if (str)
 		write(1, str, ft_strlen(str));
-}
-
-void		ft_putnbr(int n)
-{
-	char	a;
-
-	if (n < 0)
-		write(1, "-", 1);
-	if (n / 10)
-		ft_putnbr(ft_abs(n / 10));
-	a = '0' + ft_abs(n % 10);
-	write(1, &a, 1);
 }
 
 char	*ft_strdup(const char *s1)
